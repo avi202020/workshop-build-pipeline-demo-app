@@ -1,0 +1,13 @@
+{
+  "name": "workshop-build-pipeline-demo-app",
+  "version": "0.0.1",
+  "description": "A demo application for Kubernetes build pipeline workshop",
+  "main": "src/app.js",
+  "engines": {
+    "node": ">=6.10.0"
+  },
+  "author": "Oleg Chunikhin <oleg@kublr.com>",
+  "dependencies": {
+    "express": "4.16.3"
+  }
+}

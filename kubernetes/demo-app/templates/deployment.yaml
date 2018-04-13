@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  replicas: 1
+  revisionHistoryLimit: {{ .Values.app.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+        chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+        release: "{{ .Release.Name }}"
+        heritage: "{{ .Release.Service }}"
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 0
+      containers:
+      - name: main
+        image: {{ .Values.app.image }}
+        imagePullPolicy: {{ .Values.app.imagePullPolicy }}
+        resources:
+          {{ .Values.resources.app | toYaml | indent 10 | trim }}
+        livenessProbe:
+          tcpSocket:
+            port: http
+          initialDelaySeconds: 360
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: http
+          timeoutSeconds: 5
+        ports:
+        - name: http
+          containerPort: 3000

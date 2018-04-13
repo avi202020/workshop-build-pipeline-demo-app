@@ -1,0 +1,24 @@
+# Use nameOverride to override chart name in objects' names
+# Default objects' name is {{.Release.Name}}-{{.Chart.Name}}
+nameOverride:
+
+# Use serviceNameOverride to override service name
+# Default service name is {{.Release.Name}}
+serviceNameOverride:
+
+ingress:
+  enabled: false
+  domain: app.example.com
+
+app:
+  image: nexus.build.svc.cluster.local:5000/workshop-build-pipeline/demo-app
+  imagePullPolicy: Always
+  revisionHistoryLimit: 1
+
+resources:
+  app:
+    requests:
+      cpu: 10m
+      memory: 256Mi
+    limits:
+      memory: 256Mi
